@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "Login";
+
+    <link rel="stylesheet" type="text/css" href="~/web/css/style.css">
+
+    <script>
+
+        function Fn_Get_Login() {
+            var clsLogin = {};
+            clsLogin.ErrorMsg = '';
+            if ($('#txtEmail').val() == '') {
+                clsLogin.ErrorMsg = "Pease Enter Email Id";
+            }
+
+            else if ($('#txtPassword').val() == '') {
+                clsLogin.ErrorMsg = "Pease Enter Password";
+
+            }
+            else {
+
+                clsLogin.Email = $('#txtEmail').val();
+                clsLogin.UPassword = $('#txtPassword').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/Fn_Get_LogIn',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    data: JSON.stringify(clsLogin),
+                    success: function (data) {
+                        if (data.success == true) {
+                            //alert(data.ErrorMsg);
+                            alert('Customer Added Successfully')
+                        }
+                        else {
+                            alert('Customer Not Added')
+                        }
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            }
+        }
+    </script>
+}
+
+<h2>Login</h2>
+<br />
+<br />
+<table>
+    <tr>
+        <td><img src="~/Web/Images/SingleLogoHighnoBG.png" alt="logo2" width="600"></td>
+        <td>
+            <div>
+                <form action="" class="logincontainer">
+                    <h1>Login</h1>
+
+                    <label for="email"><b>Email</b></label><br />
+                    <input type="text" placeholder="Enter Email" id="txtEmail" name="txtemail" class="inputlogin" required><br />
+
+                    <label for="psw"><b>Password</b></label><br />
+                    <input type="password" placeholder="Enter Password" id="txtPassword" name="txtEmail" class="inputlogin" required><br />
+
+                    <button type="submit" id="btnLogin" onclick="Fn_Get_Login();" class="btnlogin">Login</button>
+                    <br />
+                    <p class="register">Not a member?  @Html.ActionLink("Register here", "Register", "Registration")</p>
+
+                </form>
+            </div>
+        </td>
+    </tr>
+</table>

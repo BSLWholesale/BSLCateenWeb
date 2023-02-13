@@ -1,0 +1,567 @@
+﻿@model BSLWeb.Models.clsCustomize
+@{
+    ViewBag.Title = "Fabric";
+
+    <link rel="stylesheet" type="text/css" href="~/web/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/web/css/cart.css">
+    <script src="~/Web/js/cart.js"></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          crossorigin="anonymous">
+
+    <script>
+        var ErrorMsg = '';
+        function fn_Blank_Control() {
+             $('#txtQualityNumber').val('');
+            $('#txtPriceRange').val('');
+            $('#txtBlendDesc').val('');
+            $('#txtWeaveType').val('');
+            $('#txtWeight').val('');
+            $('#txtStretchType').val('');
+            $('#txtDesignPattern').val('');
+
+            $('#txtNoQty').val('');
+            $('#txtRemarks').val('');
+        }
+        function Validate_Control(ErrorMsg) {
+            if ($('#txtQualityNumber').val() == '') {
+                ErrorMsg = "Quantity is Quantity Number";
+               
+            }
+            if ($('#txtPriceRange').val() == '') {
+                ErrorMsg = "Quantity is Price Range";
+               
+            }
+            if ($('#txtBlendDesc').val() == '') {
+                ErrorMsg = "Quantity is Blend Description";
+            }
+            if ($('#txtWeaveType').val() == '') {
+                ErrorMsg = "Quantity is Weave Type";
+            }
+            if ($('#txtWeight').val() == '') {
+                ErrorMsg = "Quantity is Weight";
+            }
+            if ($('#txtStretchType').val() == '') {
+                ErrorMsg = "Quantity is Stretch Type";
+            }
+            if ($('#txtDesignPattern').val() == '') {
+                ErrorMsg = "Quantity is Design Pattern";
+            }
+            if ($('#txtNoQty').val() == '') {
+                ErrorMsg = "Quantity is blank";
+            }
+            
+           
+        }
+
+        function fn_Save_Customize_Data() {
+            
+            var clsCustomize = {};
+            clsCustomize.ErrorMsg = '';
+            if ($('#txtQualityNumber').val() == '') {
+                clsCustomize.ErrorMsg = "Quantity is Quantity Number";
+            }
+
+            else if ($('#txtPriceRange').val() == '') {
+                clsCustomize.ErrorMsg = "Quantity is Price Range";
+
+            }
+            else if  ($('#txtBlendDesc').val() == '') {
+                clsCustomize.ErrorMsg = "Quantity is Blend Description";
+            }
+            else if  ($('#txtWeaveType').val() == '') {
+                clsCustomize.ErrorMsg = "Quantity is Weave Type";
+            }
+            else if  ($('#txtWeight').val() == '') {
+                clsCustomize.ErrorMsg = "Quantity is Weight";
+            }
+            else if  ($('#txtStretchType').val() == '') {
+                clsCustomize.ErrorMsg = "Quantity is Stretch Type";
+            }
+            else if  ($('#txtDesignPattern').val() == '') {
+                clsCustomize.ErrorMsg = "Quantity is Design Pattern";
+            }
+            else if  ($('#txtNoQty').val() == '') {
+                clsCustomize.ErrorMsg = "Quantity is blank";
+            }
+
+            Validate_Control(clsCustomize.ErrorMsg);
+            clsCustomize.QuantityNumber = $('#txtQualityNumber').val();
+            clsCustomize.PriceRange = $('#txtPriceRange').val();
+            clsCustomize.BlendDescription = $('#txtBlendDesc').val();
+            clsCustomize.WeaveType = $('#txtWeaveType').val();
+            clsCustomize.Weight = $('#txtWeight').val();
+            clsCustomize.StretchType = $('#txtStretchType').val();
+            clsCustomize.DesignPattern = $('#txtDesignPattern').val();
+
+            clsCustomize.Quantity = $('#txtNoQty').val();
+            clsCustomize.Remarks = $('#txtRemarks').val();
+
+            if (clsCustomize.ErrorMsg == '') {
+                $.ajax({
+                    type: "POST",
+                   // url: "/Product/SaveData",
+                    url: '/Product/Fn_Save_CustomizeData',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    data: JSON.stringify(clsCustomize),
+                    success: function (data) {
+                        fn_Blank_Control();
+                        if (data.success == true) {
+                            //alert(data.ErrorMsg);
+                            alert('Customize data Added Successfully')
+                        }
+                        else {
+                            alert('Customize data Not Added')
+                        }
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            }
+            else {
+                alert(clsCustomize.ErrorMsg);
+            }
+        }
+    </script>
+}
+
+<br />
+<br />
+<br />
+<br />
+<section class="container content-section">
+    <h2 class="section-header">Fabric</h2>
+    <div class="multidropdown">
+        <select name="qualityno" id="qualityno" class="qualityndropdown">
+            <option value="quality">Quality Number</option>
+            <option value="00C26139">00C26139</option>
+            <option value="00TREVES">00TREVES</option>
+            <option value="0510446B">0510446B</option>
+            <option value="0601187A">0601187A</option>
+            <option value="0OP-8707">0OP-8707</option>
+            <option value="10109">10109</option>
+        </select>
+
+        <select name="pricerange" id="pricerange" class="pricerangedropdown">
+            <option value="price">Price Range</option>
+            <option value="2.00">2.00</option>
+            <option value="3.00">3.00</option>
+            <option value="4.00">4.00</option>
+            <option value="5.00">5.00</option>
+            <option value="6.00">6.00</option>
+            <option value="7.00">7.00</option>
+        </select>
+
+        <select name="blend" id="blend" class="blenddesvaluedropdown">
+            <option value="desciptionvalue">Blend Description & Value</option>
+            <option value="C/LY99/1">C/LY99/1</option>
+            <option value="P/C70/30">P/C70/30</option>
+            <option value="P/V/ELA62/31/07">P/V/ELA62/31/07</option>
+            <option value="P/V/ELA63/34/03">P/V/ELA63/34/03</option>
+            <option value="P/V/ELA77/19/04">P/V/ELA77/19/04</option>
+            <option value="P/V/W54/23/23">P/V/W54/23/23</option>
+        </select>
+
+        <select name="weave" id="weave" class="weavetypedropdown">
+            <option value="weavetype">Weave Type</option>
+            <option value="1/3 TWILL">1/3 TWILL</option>
+            <option value="2/1 + 1/2">2/1 + 1/2</option>
+            <option value="2/1 TWILL">2/1 TWILL</option>
+            <option value="2/2 TWILL">2/2 TWILL</option>
+            <option value="BARATHEA W">BARATHEA W</option>
+            <option value="FANCY">FANCY</option>
+        </select>
+
+        <select name="weight" id="weight" class="weightgsmdropdown">
+            <option value="weightgsm">Weight(GSM)</option>
+            <option value="96">96</option>
+            <option value="124">124</option>
+            <option value="129">129</option>
+            <option value="141">141</option>
+            <option value="150">150</option>
+            <option value="155">155</option>
+        </select>
+
+        <select name="stretch" id="stretch" class="stretchdropdown">
+            <option value="stretch">Stretch Type</option>
+            <option value="B">B</option>
+            <option value="R">R</option>
+            <option value="W">W</option>
+        </select>
+
+        <select name="design" id="design" class="designdropdown">
+            <option value="designpattern">Design Pattern</option>
+            <option value="0">0</option>
+            <option value="00000A">00000A</option>
+            <option value="00000B">00000B</option>
+            <option value="000DNM">000DNM</option>
+            <option value="0REQ84">0REQ84</option>
+            <option value="1">1</option>
+        </select>
+
+        <button type="submit" class="searchbutton"><i class="fa fa-search"></i></button>
+
+        <!-- <button type="submit" class="customizedbutton" id="mybtn" onclick="myform(1)">Customized Fabric</button> -->
+
+        <button type="submit" class="customizedbutton" id="mybtn">Customized Fabric</button>
+
+    </div>
+
+    <!-- <br /> -->
+    <hr />
+    <div id="hide">
+        <div class="shop-items">
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric Polyster</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric1.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$12.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric Wooven</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric2.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$14.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric Cotton</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric3.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$9.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric4</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric4.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric5</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric5.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric6</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric6.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric7</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric7.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric8</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric8.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric9</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric9.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric9</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric10.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$29.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric9</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric11.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$17.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Fabric9</span>
+                <img class="shop-item-image" src="~/web/Images/fabric/Fabric12.jpg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$27.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div id="show" style="display: none;">
+    <form id="myform" action="C:\wamp64\index.php" method="POST">
+        <table>
+            <tr>
+                <td>
+                    <label class="labelclass">Quantity Number</label>
+                </td>
+                <td>
+                    <!-- <select name="qualityno" id="qualityno" class="commondropdown"> -->
+
+                    <select name="qualityno" id="qualitynodropdown" class="commondropdown" onchange="updateTextField()">
+                        <option selected value="">-- Select Quality Number --</option>
+                        <option value="00C26139">00C26139</option>
+                        <option value="00TREVES">00TREVES</option>
+                        <option value="0510446B">0510446B</option>
+                        <option value="0601187A">0601187A</option>
+                        <option value="0OP-8707">0OP-8707</option>
+                        <option value="10109">10109</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtQualityNumber" value="" class="commontext">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labelclass">Price Range</label>
+                </td>
+                <td>
+                    <select name="pricerange" id="pricerangedropdown" class="commondropdown" onchange="updatePriceRange()">
+                        <option selected value="">-- Select Price Range --</option>
+                        <option value="2.00">2.00</option>
+                        <option value="3.00">3.00</option>
+                        <option value="4.00">4.00</option>
+                        <option value="5.00">5.00</option>
+                        <option value="6.00">6.00</option>
+                        <option value="7.00">7.00</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtPriceRange" value="" class="commontext">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labelclass">Blend Description & Value</label>
+                </td>
+                <td>
+                    <select name="blend" id="blenddesc" class="commondropdown" onchange="updateBlendDesc()">
+                        <option selected value="">-- Select Blend Desc. & Value --</option>
+                        <option value="C/LY99/1">C/LY99/1</option>
+                        <option value="P/C70/30">P/C70/30</option>
+                        <option value="P/V/ELA62/31/07">P/V/ELA62/31/07</option>
+                        <option value="P/V/ELA63/34/03">P/V/ELA63/34/03</option>
+                        <option value="P/V/ELA77/19/04">P/V/ELA77/19/04</option>
+                        <option value="P/V/W54/23/23">P/V/W54/23/23</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtBlendDesc" value="" class="commontext">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labelclass">Weave Type</label>
+                </td>
+                <td>
+                    <select name="weave" id="weavedropdown" class="commondropdown" onchange="updateWeaveType()">
+                        <option selected value="">-- Select Weave Type --</option>
+                        <option value="1/3 TWILL">1/3 TWILL</option>
+                        <option value="2/1 + 1/2">2/1 + 1/2</option>
+                        <option value="2/1 TWILL">2/1 TWILL</option>
+                        <option value="2/2 TWILL">2/2 TWILL</option>
+                        <option value="BARATHEA W">BARATHEA W</option>
+                        <option value="FANCY">FANCY</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtWeaveType" value="" class="commontext">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labelclass">Weight(GSM)</label>
+                </td>
+                <td>
+                    <select name="weight" id="weightdropdown" class="commondropdown" onchange="updateWeight()">
+                        <option selected value="">-- Select Weight(GSM) --</option>
+                        <option value="96">96</option>
+                        <option value="124">124</option>
+                        <option value="129">129</option>
+                        <option value="141">141</option>
+                        <option value="150">150</option>
+                        <option value="155">155</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtWeight" value="" class="commontext">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labelclass">Stretch Type</label>
+                </td>
+                <td>
+                    <select name="stretch" id="stretchdropdown" class="commondropdown" onchange="updateStretch()">
+                        <option selected value="">-- Select Stretch Type --</option>
+                        <option value="B">B</option>
+                        <option value="R">R</option>
+                        <option value="W">W</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtStretchType" value="" class="commontext">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labelclass">Design Pattern</label>
+                </td>
+                <td>
+                    <select name="design" id="designdropdown" class="commondropdown" onchange="updateDesignPattern()">
+                        <option selected value="">-- Select Design Pattern --</option>
+                        <option value="0">0</option>
+                        <option value="00000A">00000A</option>
+                        <option value="00000B">00000B</option>
+                        <option value="000DNM">000DNM</option>
+                        <option value="0REQ84">0REQ84</option>
+                        <option value="1">1</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtDesignPattern" value="" class="commontext">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labelclass">Quantity</label>
+                </td>
+                <td>
+                    <label></label>
+                </td>
+                <td>
+                    <input type="number" id="txtNoQty" value="1" class="commontext">
+                </td>
+                <td><label class="labelmeter">Meter</label></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labelclass">Remarks</label>
+                </td>
+                <td>
+                    <label></label>
+                </td>
+                <td>
+                    <!-- <input type="text" value="" class="commontext" cols="2" rows="4"> -->
+                    <textarea class="commontextarea" id="txtRemarks"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="button" name="Submit" onclick="fn_Save_Customize_Data();" value="Submit" class="commonbutton">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script>
+    const targetDiv = document.getElementById("hide");
+    const targetDiv2 = document.getElementById("show");
+    const btn = document.getElementById("mybtn");
+    btn.onclick = function () {
+        if (targetDiv.style.display !== "none" || targetDiv2.style.display !== "none") {
+            targetDiv.style.display = "none";
+            targetDiv2.style.display = "none";
+        } else {
+            targetDiv.style.display = "none";
+            targetDiv2.style.display = "block";
+        }
+    };
+</script>
+
+<script>
+    function updateTextField() {
+        var qualitydropdown = document.getElementById("qualitynodropdown");
+        var selection = qualitydropdown.value;
+        console.log(selection);
+        var qualityTextField = document.getElementById("txtQualityNumber");
+        qualityTextField.value = selection;
+    }
+
+    function updatePriceRange() {
+        var pricerange = document.getElementById("pricerangedropdown");
+        var selection1 = pricerange.value;
+        console.log(selection1);
+        var priceTextField = document.getElementById("txtPriceRange");
+        priceTextField.value = selection1;
+    }
+
+    function updateBlendDesc() {
+        var blenddropdown = document.getElementById("blenddesc");
+        var selection2 = blenddropdown.value;
+        console.log(selection2);
+        var blendTextField = document.getElementById("txtBlendDesc");
+        blendTextField.value = selection2;
+    }
+
+    function updateWeaveType() {
+        var weavetypedropdown = document.getElementById("weavedropdown");
+        var selection3 = weavetypedropdown.value;
+        console.log(selection3);
+        var weaveTextField = document.getElementById("txtWeaveType");
+        weaveTextField.value = selection3;
+    }
+
+    function updateWeight() {
+        var weight = document.getElementById("weightdropdown");
+        var selection4 = weight.value;
+        console.log(selection4);
+        var weightTextField = document.getElementById("txtWeight");
+        weightTextField.value = selection4;
+    }
+
+    function updateStretch() {
+        var stretch = document.getElementById("stretchdropdown");
+        var selection5 = stretch.value;
+        console.log(selection5);
+        var stretchTextField = document.getElementById("txtStretchType");
+        stretchTextField.value = selection5;
+    }
+
+    function updateDesignPattern() {
+        var designpattern = document.getElementById("designdropdown");
+        var selection6 = designpattern.value;
+        console.log(selection6);
+        var designTextField = document.getElementById("txtDesignPattern");
+        designTextField.value = selection6;
+    }
+
+</script>
