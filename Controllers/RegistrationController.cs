@@ -14,6 +14,7 @@ namespace BSLWeb.Controllers
     public class RegistrationController : Controller
     {
 
+
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BSL"].ConnectionString);
         
         // GET: Registration
