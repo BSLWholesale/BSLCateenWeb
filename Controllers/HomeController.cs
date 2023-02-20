@@ -4,16 +4,20 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace BSLWeb.Controllers
 {
     public class HomeController : Controller
     {
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BSL"].ConnectionString);
+        // GitProject
 
         public ActionResult Index()
         {
@@ -41,12 +45,14 @@ namespace BSLWeb.Controllers
             return View();
         }
 
-        public ActionResult Register()
+        public ActionResult LogOut()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            Session.Clear();
+            Session.RemoveAll();
+            Session.Abandon();
+            return RedirectToAction("LogIn");
         }
+
 
         //
         [HttpPost]
@@ -68,6 +74,17 @@ namespace BSLWeb.Controllers
                 HttpResponseMessage responsePost = client.PostAsync("api/CustomizeAPI/Fn_Get_Login", content).Result;
                 if (responsePost.IsSuccessStatusCode)
                 {
+                    var data = responsePost.Content.ReadAsStringAsync().Result;
+                    //string[]  strsp = data.Split(",");
+                    //string strUser = strsp[0].ToString();
+                    Session["strUser"] = data[2].ToString();
+                    string uname = data[1].ToString();
+                    Session["UserId"] = data[1].ToString();
+                    login.Id = data[1];
+                    //HttpCookie cookie = new HttpCookie("Cookie");
+                    //cookie["userid"] = rdr["Email"].ToString();
+                    //cookie["pass"] = rdr["UPassword"].ToString();
+                    //Response.Cookies.Add(cookie);
                     return Json(new { success = true, message = responsePost.Content.ReadAsStringAsync().Result }, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -77,6 +94,6 @@ namespace BSLWeb.Controllers
             }
         }
 
-        
+       
     }
 }

@@ -237,10 +237,10 @@ td input {
 }
 
 .commondropdown {
-    width: 50%;
+    width: 70%;
     color: black;
     background-color: #cdd2d9;
-    font-weight: bold;
+   /* font-weight: bold;*/
     height: 30px;
     margin-right: none;
 }
@@ -249,7 +249,7 @@ td input {
     width: 45%;
     color: black;
     background-color: whitesmoke;
-    font-weight: bold;
+    /*font-weight: bold;*/
     height: 30px;
     border-width: 1px;
     margin-right: none;
@@ -259,14 +259,16 @@ td input {
     width: 60%;
     color: black;
     background-color: whitesmoke;
-    font-weight: bold;
+   /* font-weight: bold;*/
     height: 60%;
 }
 
 .commonbutton {
     width: 30%;
-    color: black;
-    background-color: #36e95c;
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    /*background-color: #36e95c;*/
     font-weight: bold;
     height: 30px;
 }
@@ -276,8 +278,8 @@ td input {
     width: 45%;
     color: black;
     /* background-color: whitesmoke; */
-    font-weight: bold;
-    height: 30px;
+   /* font-weight: bold;
+    height: 30px;*/
     margin-left: 50%;
     margin-right: none;
 }
@@ -285,7 +287,7 @@ td input {
 .labelmeter {
     width: 45%;
     color: black;
-    font-weight: bold;
+    /*font-weight: bold;*/
     height: 30px;
     margin-left: 1%;
     margin-right: none;
@@ -295,7 +297,7 @@ td input {
     /* border: 1px black solid; */
     text-align: left;
     margin-left: 0%;
-    /* width: 50px; */
+     width: 80px; 
 }
 
 /* .multidropdown {
@@ -485,7 +487,7 @@ td input {
     width: 45%;
     color: black;
     background-color: whitesmoke;
-    font-weight: bold;
+   /* font-weight: bold;*/
     height: 30px;
     border-width: 1px;
     margin-right: none;

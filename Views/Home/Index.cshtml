@@ -1,7 +1,13 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+}
+@{
 
-    
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/LogIn");
+    }
 }
 <br />
 <br />
@@ -83,4 +89,4 @@
     </div>
 </div>
 
- 
+

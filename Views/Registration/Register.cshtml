@@ -70,9 +70,11 @@
                     dataType: "json",
 
                     data: JSON.stringify(clsRegistration),
-                    success: function (data) {
+                    success: function (Result)
+                    {
                         fn_Blank_Control();
-                        if (data.success == true) {
+                        if (Result.success)
+                        {
                             //alert(data.ErrorMsg);
                             alert('Customer Added Successfully')
                         }

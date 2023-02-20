@@ -108,7 +108,7 @@
                     data: JSON.stringify(clsCustomize),
                     success: function (data) {
                         fn_Blank_Control();
-                        if (data.success == true) {
+                        if (data.clsCustomize.ErrorMsg == 'success') {
                             //alert(data.ErrorMsg);
                             alert('Customize data Added Successfully')
                         }
@@ -206,13 +206,13 @@
 
         <!-- <button type="submit" class="customizedbutton" id="mybtn" onclick="myform(1)">Customized Fabric</button> -->
 
-        <button type="submit" class="customizedbutton" id="mybtn">Customized Fabric</button>
+        <button type="submit" class="customizedbutton" value="Customized Fabric" id="mybtn">Customized Fabric</button>
 
     </div>
 
     <!-- <br /> -->
     <hr />
-    <div id="hide">
+    <div id="divFebric">
         <div class="shop-items">
             <div class="shop-item">
                 <span class="shop-item-title">Fabric Polyster</span>
@@ -315,8 +315,8 @@
 </section>
 
 
-<div id="show" style="display: none;">
-    <form id="myform" action="C:\wamp64\index.php" method="POST">
+<div id="divCustomize" style="display: none;">
+    
         <table>
             <tr>
                 <td>
@@ -338,7 +338,6 @@
                 <td>
                     <input type="text" id="txtQualityNumber" value="" class="commontext">
                 </td>
-                <td></td>
             </tr>
             <tr>
                 <td>
@@ -358,7 +357,7 @@
                 <td>
                     <input type="text" id="txtPriceRange" value="" class="commontext">
                 </td>
-                <td></td>
+                
             </tr>
             <tr>
                 <td>
@@ -378,7 +377,7 @@
                 <td>
                     <input type="text" id="txtBlendDesc" value="" class="commontext">
                 </td>
-                <td></td>
+              
             </tr>
             <tr>
                 <td>
@@ -398,7 +397,7 @@
                 <td>
                     <input type="text" id="txtWeaveType" value="" class="commontext">
                 </td>
-                <td></td>
+              
             </tr>
             <tr>
                 <td>
@@ -418,7 +417,7 @@
                 <td>
                     <input type="text" id="txtWeight" value="" class="commontext">
                 </td>
-                <td></td>
+               
             </tr>
             <tr>
                 <td>
@@ -435,7 +434,7 @@
                 <td>
                     <input type="text" id="txtStretchType" value="" class="commontext">
                 </td>
-                <td></td>
+               
             </tr>
             <tr>
                 <td>
@@ -455,7 +454,7 @@
                 <td>
                     <input type="text" id="txtDesignPattern" value="" class="commontext">
                 </td>
-                <td></td>
+               
             </tr>
             <tr>
                 <td>
@@ -465,9 +464,9 @@
                     <label></label>
                 </td>
                 <td>
-                    <input type="number" id="txtNoQty" value="1" class="commontext">
+                    <input type="number" id="txtNoQty" value="30" min="30" class="commontext">
+                    <label class="labelmeter">Meter</label>
                 </td>
-                <td><label class="labelmeter">Meter</label></td>
             </tr>
             <tr>
                 <td>
@@ -489,20 +488,24 @@
                 </td>
             </tr>
         </table>
-    </form>
+   
 </div>
 
 <script>
-    const targetDiv = document.getElementById("hide");
-    const targetDiv2 = document.getElementById("show");
+    const targetDiv = document.getElementById("divFebric");
+    const targetDiv2 = document.getElementById("divCustomize");
     const btn = document.getElementById("mybtn");
     btn.onclick = function () {
-        if (targetDiv.style.display !== "none" || targetDiv2.style.display !== "none") {
-            targetDiv.style.display = "none";
-            targetDiv2.style.display = "none";
-        } else {
+        if (targetDiv.style.display !== "none" || targetDiv2.style.display == "none") {
             targetDiv.style.display = "none";
             targetDiv2.style.display = "block";
+            /* $('#mybtn').text = 'Back';*/
+            $("#mybtn").html('Back');
+        } else {
+            targetDiv2.style.display = "none";
+            targetDiv.style.display = "block";
+            /*  $('#mybtn').text = 'Customized Fabric';*/
+            $("#mybtn").html('Customized Fabric');
         }
     };
 </script>

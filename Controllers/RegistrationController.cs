@@ -13,7 +13,7 @@ namespace BSLWeb.Controllers
 {
     public class RegistrationController : Controller
     {
-
+        // GitProject
 
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["BSL"].ConnectionString);
         
