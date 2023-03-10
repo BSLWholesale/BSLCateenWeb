@@ -1,10 +1,10 @@
 ﻿@{
-
     Layout = null;
 
     <link rel="stylesheet" type="text/css" href="~/web/css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <script src="~/Web/js/sweetalert.min.js"></script>
 
     <script>
 
@@ -12,14 +12,12 @@
             var clsLogin = {};
             clsLogin.ErrorMsg = '';
             if ($('#txtEmail').val() == '') {
-                clsLogin.ErrorMsg = "Pease Enter Email Id";
+                clsLogin.ErrorMsg = "Please Enter Email Id";
             }
-
             else if ($('#txtPassword').val() == '') {
-                clsLogin.ErrorMsg = "Pease Enter Password";
+                clsLogin.ErrorMsg = "Please Enter Password";
             }
             else {
-
                 clsLogin.Email = $('#txtEmail').val();
                 clsLogin.UPassword = $('#txtPassword').val();
 
@@ -31,11 +29,18 @@
 
                     data: JSON.stringify(clsLogin),
                     success: function (Result) {
-                        if (Result.success == true) {
+                        debugger;
+                        var obj = JSON.parse(Result.message)
+                        if (obj.ErrorMsg == 'success') {
+                            //var obj = JSON.parse(Result.message);
+                            //var id = obj.Id;
+                            //var struser = obj.FirstName;
+                            //$('#strUserName').val(struser);
+                            //$('#strUserId').val(id);
                             window.location.href = "@Url.Action("Index", "Home")";
                         }
                         else {
-                            alert('Login Faild !.');
+                            swal("Login", "User Id or Password is incorrect.", "error");
                         }
                     },
                     error: function (err) {

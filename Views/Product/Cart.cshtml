@@ -1,0 +1,174 @@
+﻿@model IEnumerable<BSLWeb.Models.clsProductCart>
+
+@{
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/LogIn");
+    }
+
+    ViewBag.Title = "Cart";
+}
+
+@{
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/web/css/style.css">
+    <script src="~/Web/js/sweetalert.min.js"></script>
+    @*<link rel="stylesheet" type="text/css" href="~/web/css/cart.css">*@
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        function Fn_GetCount_Item() {
+
+            var clsRequestProduct = {};
+            clsRequestProduct.vCustomerId = $('#strUserId').val();
+            $.ajax({
+                type: "POST",
+                url: '/Product/Fn_Get_Count_Cart_Item',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsRequestProduct),
+                success: function (data) {
+                    var pcount = data.message;
+                    if (data.success == true) {
+                        $('#Allcart').html(pcount);
+                    }
+                    else {
+                        alert('Customize data Not Added')
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            Fn_GetCount_Item();
+        });
+
+
+        function Fn_DeleteCart_Item(Pid) {
+            //debugger;
+            var clsDeleteProduct = {};
+            clsDeleteProduct.vCustomerId = $('#strUserId').val();
+            clsDeleteProduct.nProductId = Pid;
+            //debugger;
+            $.ajax({
+                type: "POST",
+                url: '/Product/Fn_Delete_Cart_Item',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsDeleteProduct),
+                success: function (data) {
+                    //debugger;
+                    var removeitem = data.message;
+                    if (data.success == true) {
+                        Fn_GetCount_Item();
+                        //window.location.href = "@Url.Action("Cart", "Product")";
+                        swal("Items", "is removed !", "success");
+                        //Fn_PageReload();
+                        setInterval('location.reload()', 1000);
+                        //setInterval(window.location.href = "@Url.Action("Cart", "Product")", 2000);
+                        //location.reload(true);
+                        //window.location.reload();
+                    }
+                    else {
+                        swal(nameProduct, "is Failed !", "error");
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        @*function Fn_PageReload() {
+            window.location.href = "@Url.Action("Cart", "Product")";
+        }*@
+
+    </script>
+}
+<br />
+<br />
+<br />
+<br />
+<h2 style="text-align: center; color: #08417b; font-family: 'Times New Roman', Times, serif;">Cart</h2>
+
+
+
+<div class="container">
+
+    <div class="col-sm-8">
+        @foreach (var item in Model)
+        {
+            var dir = "";
+           // var design =  item.vCategory + item.nProductId + ".jpg";
+            if (item.vCategory == "Fabric")
+            {
+                dir = "fabric/" + item.vCategory + item.nProductId + ".jpg";
+            }
+            else if (item.vCategory == "Yarn")
+            {
+                dir = "yarn/" + item.vCategory + item.nProductId + ".jpeg";
+            }
+            else if (item.vCategory == "Garments")
+            {
+                dir = "garments/" + item.vCategory + item.nProductId + ".jpeg";
+            }
+            else
+            {
+                dir = "";
+            }
+
+            var cid = Session["UserId"];
+            <div class="row" style="border-bottom: 1px solid black;">
+                <div class="col-sm-2">
+                    <img class="image" src="~/Web/Images/@dir" width="80px" height="100px">
+                    @*<img class="image" src="~/Web/Images/yarn/@design" width="80px" height="100px" />*@
+                </div>
+                <div class="col-sm-8">
+                    <span>@item.vCategory</span><br />
+                    <span>@item.vProductName @item.vGround @item.vBorder</span><br />
+                    <span>Size: @item.vSize</span><br />
+                    <span>Qty: @item.nQuantity</span><br />
+                    <span>Rs: @item.vPrice</span>
+                    @*<br />
+                    <span>Ply: @item.nPly</span><br />
+                    <span>Technique: @item.vTechnique</span>*@
+                    <br />
+                    <br />
+                </div>
+                <div class="col-sm-2">
+                    <br />
+                    <br />
+                    <img class="image p-t-20" src="~/Web/delete.png" width="20px" title="Remove" id="removeitem" onclick="Fn_DeleteCart_Item(@item.nProductId);" />
+                </div>
+                <br /> <br />
+            </div><br />
+
+        }
+
+    </div>
+    <div class="col-sm-4">
+        <table>
+            <thead>
+                <tr>
+                    <th style="background-color: #08417b; color: white; text-align: center; font-size: 18px;padding: 8px" colspan="2">Order Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Item Price</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Total Quantity</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

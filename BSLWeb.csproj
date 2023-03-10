@@ -131,6 +131,7 @@
     </Compile>
     <Compile Include="Models\clsCustomize.cs" />
     <Compile Include="Models\clsLogin.cs" />
+    <Compile Include="Models\clsProduct.cs" />
     <Compile Include="Models\clsRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -278,6 +279,8 @@
     <Content Include="Views\Product\Garments.cshtml" />
     <Content Include="Views\Home\LogIn.cshtml" />
     <Content Include="Views\Registration\Register.cshtml" />
+    <Content Include="Views\Product\Cart.cshtml" />
+    <Content Include="Views\Product\ProductDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

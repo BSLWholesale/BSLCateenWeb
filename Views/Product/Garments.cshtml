@@ -1,6 +1,567 @@
 ﻿
 @{
-    ViewBag.Title = "Garments";
-
-    
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/LogIn");
+    }
 }
+
+@{
+    ViewBag.Title = "Garments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    <link rel="stylesheet" type="text/css" href="~/Web/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/Web/css/cart.css">
+    @*<script src="~/Web/js/cart.js"></script>*@
+    <script src="~/Web/js/sweetalert.min.js"></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          crossorigin="anonymous">
+
+    <script type="text/javascript">
+        function Fn_GetCount_Item() {
+
+            var clsRequestProduct = {};
+            clsRequestProduct.vCustomerId = $('#strUserId').val();
+            $.ajax({
+                type: "POST",
+                url: '/Product/Fn_Get_Count_Cart_Item',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsRequestProduct),
+                success: function (data) {
+                    var pcount = data.message;
+                    if (data.success == true) {
+                        $('#Allcart').html(pcount);
+                    }
+                    else {
+                        alert('Customize data Not Added')
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        //$(document).ready(function () {
+        //    Fn_GetCount_Item();
+        //});
+
+        function insert_rmgcart(id) {
+            debugger;
+            var clsRequestProduct = {};
+            var nameProduct = $('.shop-item-title').html();
+            var myString = $('.shop-item-price').html();;
+            var myNewString = myString.replace("$", "");
+
+            clsRequestProduct.vCategory = 'Garments';
+            clsRequestProduct.nProductId = id;
+            clsRequestProduct.vProductName = nameProduct;
+            clsRequestProduct.vGround = 'Trouser';
+            //clsRequestProduct.vBorder = 'Plain';
+            clsRequestProduct.vBlendDescription = 'Plain';
+            clsRequestProduct.vSize = 'S';
+            clsRequestProduct.vPrice = myNewString;
+            clsRequestProduct.nQuantity = 5;
+            clsRequestProduct.vFabricType = 'KNIT';
+            clsRequestProduct.vSeason = 'Summer';
+            clsRequestProduct.bIsStatus = false;
+
+
+            if (clsRequestProduct.vSize === undefined) {
+                swal(nameProduct, "Please select size !", "success");
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: '/Product/Fn_Insert_Cart',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsRequestProduct),
+                    success: function (Result) {
+                        if (Result.success == true) {
+                            Fn_GetCount_Item();
+                            swal(nameProduct, "is added to cart !", "success");
+                        }
+                        else {
+                            swal(nameProduct, "No stock left !", "error");
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        function Fn_GetCount_Item() {
+
+            var clsRequestProduct = {};
+            clsRequestProduct.vCustomerId = $('#strUserId').val();
+            $.ajax({
+                type: "POST",
+                url: '/Product/Fn_Get_Count_Cart_Item',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsRequestProduct),
+                success: function (data) {
+                    var pcount = data.message;
+                    if (data.success == true) {
+                        $('#Allcart').html(pcount);
+                    }
+                    else {
+                        alert('Customize data Not Added')
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        //$(document).ready(function () {
+        //    Fn_GetCount_Item();
+        //});
+
+    </script>
+
+}
+<br />
+<br />
+<br />
+<br />
+
+<section class="container content-section">
+    <h2 class="section-header">Garments</h2>
+
+    <div class="multidropdown">
+        @*<select name="category" id="category" class="categorydropdown">
+                <option value="gd">Category</option>
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="Kids">Kids</option>
+            </select>
+
+            <select name="products" id="products" class="productsdropdown">
+                <option value="Products">Products</option>
+                <option value="Jackets">Jackets</option>
+                <option value="Trousers">Trousers</option>
+                <option value="Waste coat">Waste coat</option>
+                <option value="Skirts">Skirts</option>
+                <option value="Dresses">Dresses</option>
+                <option value="Shorts">Shorts</option>
+            </select>
+
+            <select name="ranges" id="ranges" class="rangesdropdown">
+                <option value="Ranges">Ranges</option>
+                <option value="Formal">Formal</option>
+                <option value="Casual">Casual</option>
+                <option value="Uniforms">Uniforms</option>
+            </select>
+
+            <select name="fabricblends" id="fabricblends" class="fabricblendsdropdown">
+                <option value="Fabric Blends">Fabric Blends</option>
+                <option value="PV">PV</option>
+                <option value="PV Lycra">PV Lycra</option>
+                <option value="PW">PW</option>
+                <option value="PW Lycra">PW Lycra</option>
+                <option value="Cotton Blends">Cotton Blends</option>
+            </select>
+
+            <select name="fabrictype" id="fabrictype" class="fabrictypedropdown">
+                <option value="Fabric Type">Fabric Type</option>
+                <option value="Knit">Knit</option>
+                <option value="Woven">Woven</option>
+            </select>
+
+            <select name="season" id="season" class="seasondropdown">
+                <option value="Season">Season</option>
+                <option value="Fall">Fall</option>
+                <option value="Winter">Winter</option>
+                <option value="Spring">Spring</option>
+                <option value="Summer">Summer</option>
+            </select>
+
+            <button type="submit" class="searchbutton"><i class="fa fa-search"></i></button>*@
+
+        <!-- <button type="submit" class="customizedbutton" id="mybtn" onclick="myform(1)">Customized Fabric</button> -->
+
+        <button type="submit" class="customizedgarmentsbutton" id="mybtn">Customized Garments</button>
+
+    </div>
+
+    <br />
+    <hr />
+
+    <div id="hide">
+        <div class="shop-items">
+            <div class="shop-item">
+                <span class="shop-item-title">Garments1</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser1.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser1.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$12.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(1);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments2</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser2.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser2.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$14.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(2);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments3</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser3.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser3.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$9.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(3);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments4</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser4.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser4.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(4);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments5</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser5.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser5.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(5);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments6</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser6.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser6.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(6);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments7</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser7.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser7.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(7);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments8</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser8.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser8.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(8);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments9</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser9.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser9.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(9);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments10</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser10.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser10.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(10);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments11</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser11.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser11.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(11);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments12</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser12.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser12.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(12);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments13</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser13.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser13.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(13);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments14</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser14.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser14.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(14);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments15</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser15.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser15.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(15);">ADD TO CART</button>
+                </div>
+            </div>
+            <div class="shop-item">
+                <span class="shop-item-title">Garments16</span>
+                @*<img class="shop-item-image" src="~/Web/Images/garments/menstrousers/Trouser16.jpeg">*@
+                <img class="shop-item-image" src="~/Web/Images/garments/Trouser16.jpeg">
+                <div class="shop-item-details">
+                    <span class="shop-item-price">$19.99</span>
+                    <button class="btn btn-primary shop-item-button" type="button" onclick="insert_rmgcart(16);">ADD TO CART</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ---------- Cart Section --------- -->
+<!-- <section class="container content-section">
+    <h2 class="section-header">CART</h2>
+    <div class="cart-row">
+        <span class="cart-item cart-header cart-column">ITEM</span>
+        <span class="cart-price cart-header cart-column">PRICE</span>
+        <span class="cart-quantity cart-header cart-column">QUANTITY</span>
+    </div>
+    <div class="cart-items">
+    </div>
+    <div class="cart-total">
+        <strong class="cart-total-title">Total</strong>
+        <span class="cart-total-price">$0</span>
+    </div> -->
+<!-- <button class="btn btn-primary btn-purchase" type="button">PURCHASE</button> -->
+<!-- </section> -->
+
+<div id="show" style="display: none;">
+    <form id="myform" action="" method="POST">
+        <table>
+            <tr>
+                <td>
+                    <label class="labelgarmentsclass">Category</label>
+                </td>
+                <td>
+                    <!-- <select name="qualityno" id="qualityno" class="commondropdown"> -->
+                    <select name="category" id="categorydropdown" class="commongarmentsdropdown" onchange="updateCategory()">
+                        <option selected value="">-- Select Category --</option>
+                        <option value="Men">Men</option>
+                        <option value="Women">Women</option>
+                        <option value="Kids">Kids</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtCategory" value="" class="commontext">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="labelgarmentsclass">Products</label>
+                </td>
+                <td>
+                    <!-- <select name="qualityno" id="qualityno" class="commondropdown"> -->
+                    <select name="products" id="productsdropdown" class="commongarmentsdropdown" onchange="updateProducts()">
+                        <option selected value="">-- Select Products --</option>
+                        <option value="Jackets">Jackets</option>
+                        <option value="Trousers">Trousers</option>
+                        <option value="Suit">Suit</option>
+                        <option value="Waste Coat">Waste Coat</option>
+                        <option value="Skirts">Skirts</option>
+                        <option value="Dresses">Dresses</option>
+                        <option value="Shorts">Shorts</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtProducts" value="" class="commontext">
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <label class="labelgarmentsclass">Ranges</label>
+                </td>
+                <td>
+                    <!-- <select name="qualityno" id="qualityno" class="commondropdown"> -->
+                    <select name="ranges" id="rangesdropdown" class="commongarmentsdropdown" onchange="updateRanges()">
+                        <option selected value="">-- Select Ranges --</option>
+                        <option value="Formal">Formal</option>
+                        <option value="Casual">Casual</option>
+                        <option value="Uniforms">Uniforms</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtRanges" value="" class="commontext">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label class="labelgarmentsclass">Fabric Blends</label>
+                </td>
+                <td>
+                    <!-- <select name="qualityno" id="qualityno" class="commondropdown"> -->
+                    <select name="fabricblends" id="fabricblendsdropdown" class="commongarmentsdropdown" onchange="updateFabricBlends()">
+                        <option selected value="">-- Select Fabric Blends --</option>
+                        <option value="PV">PV</option>
+                        <option value="PV Lycra">PV Lycra</option>
+                        <option value="PW">PW</option>
+                        <option value="PW Lycra">PW Lycra</option>
+                        <option value="Cotton Blends">Cotton Blends</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtFabricBlends" value="" class="commontext">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labelgarmentsclass">Fabric Type</label>
+                </td>
+                <td>
+                    <!-- <select name="qualityno" id="qualityno" class="commondropdown"> -->
+                    <select name="fabrictype" id="fabrictypedropdown" class="commongarmentsdropdown" onchange="updateFabricType()">
+                        <option selected value="">-- Select Fabric Type --</option>
+                        <option value="Knit">Knit</option>
+                        <option value="Woven">Woven</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtFabricType" value="" class="commontext">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labelgarmentsclass">Season</label>
+                </td>
+                <td>
+                    <!-- <select name="qualityno" id="qualityno" class="commondropdown"> -->
+                    <select name="season" id="seasondropdown" class="commongarmentsdropdown" onchange="updateSeason()">
+                        <option selected value="">-- Select Season --</option>
+                        <option value="Fall">Fall</option>
+                        <option value="Winter">Winter</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Summer">Summer</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtSeason" value="" class="commontext">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="button" name="Submit" value="Submit" class="commonbutton">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script>
+    //const targetDiv = document.getElementById("hide");
+    //const targetDiv2 = document.getElementById("show");
+    //const btn = document.getElementById("mybtn");
+    //btn.onclick = function () {
+    //    if (targetDiv.style.display !== "none" || targetDiv2.style.display !== "none") {
+    //        targetDiv.style.display = "none";
+    //        targetDiv2.style.display = "none";
+    //    } else {
+    //        targetDiv.style.display = "none";
+    //        targetDiv2.style.display = "block";
+    //    }
+    //};
+
+    const targetDiv = document.getElementById("hide");
+    const targetDiv2 = document.getElementById("show");
+    const btn = document.getElementById("mybtn");
+    btn.onclick = function () {
+        if (targetDiv.style.display !== "none" || targetDiv2.style.display == "none") {
+            targetDiv.style.display = "none";
+            targetDiv2.style.display = "block";
+            $("#mybtn").html('Back');
+        } else {
+            targetDiv2.style.display = "none";
+            targetDiv.style.display = "block";
+            $("#mybtn").html('Customized Garments');
+        }
+    };
+</script>
+
+<script>
+    function updateCategory() {
+        var category = document.getElementById("categorydropdown");
+        var selection = category.value;
+        console.log(selection);
+        var categoryTextField = document.getElementById("txtCategory");
+        categoryTextField.value = selection;
+    }
+
+    function updateProducts() {
+        var products = document.getElementById("productsdropdown");
+        var selection2 = products.value;
+        console.log(selection2);
+        var productsTextField = document.getElementById("txtProducts");
+        productsTextField.value = selection2;
+    }
+
+    function updateRanges() {
+        var ranges = document.getElementById("rangesdropdown");
+        var selection3 = ranges.value;
+        console.log(selection3);
+        var rangesTextField = document.getElementById("txtRanges");
+        rangesTextField.value = selection3;
+    }
+
+    function updateFabricBlends() {
+        var fabricblends = document.getElementById("fabricblendsdropdown");
+        var selection4 = fabricblends.value;
+        console.log(selection4);
+        var fabricblendTextField = document.getElementById("txtFabricBlends");
+        fabricblendTextField.value = selection4;
+    }
+
+    function updateFabricType() {
+        var fabrictype = document.getElementById("fabrictypedropdown");
+        var selection5 = fabrictype.value;
+        console.log(selection5);
+        var fabrictypeTextField = document.getElementById("txtFabricType");
+        fabrictypeTextField.value = selection5;
+    }
+
+    function updateSeason() {
+        var season = document.getElementById("seasondropdown");
+        var selection6 = season.value;
+        console.log(selection6);
+        var seasonTextField = document.getElementById("txtSeason");
+        seasonTextField.value = selection6;
+    }
+</script>

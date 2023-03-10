@@ -1,0 +1,259 @@
+﻿@model IEnumerable<BSLWeb.Models.clsProductDetails>
+@{
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/LogIn");
+    }
+    //Layout = null;
+    ViewBag.Title = "ProductDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css">
+    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/web/css/style.css">
+
+
+    <script>
+        function Fn_ProductDetails() {
+            var clsProductDetails = {};
+            clsProductDetails.vCustomerId = $('#strUserId').val();
+            $.ajax({
+                type: "POST",
+                url: '/Product/Fn_Get_Product_Details',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsProductDetails),
+                success: function (data) {
+                    var pdetail = data.message;
+                    if (data.success == true) {
+                        $('#ProdDetail').html(pdetail);
+                    }
+                    else {
+                        alert('Product Details')
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+    </script>
+    <style>
+        .pdetailcontainer {
+            max-width: 80%;
+            margin: auto;
+            height: 85vh;
+            margin-top: 4%;
+            background: white;
+            box-shadow: 5px 5px 10px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .left, .right {
+            width: 90%;
+            padding: 30px;
+        }
+
+        .flex {
+            display: flex;
+            justify-content: left;
+        }
+
+        .flex1 {
+            display: flex;
+            width: 20px;
+            height: 30px;
+            padding-left: 3px;
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        .pdetail_image {
+            width: auto;
+            height: auto;
+        }
+
+        .option img {
+            width: 95px;
+            height: 95px;
+            padding: 8px;
+        }
+
+        .right {
+            padding: 50px 100px 50px 50px;
+        }
+
+        /*h3 {
+            color: #060867;
+            margin: 20px 0 20px 0;
+            font-size: 25px;
+        }*/
+
+        .pdetailbutton {
+            width: 50%;
+            padding: 13px;
+            border: none;
+            outline: none;
+            background: #06377c;
+            color: white;
+            margin-top: 10%;
+            border-radius: 30px;
+            align-items: center;
+        }
+
+        .column1 {
+            float: left;
+            width: 50%;
+            padding: 10px;
+            height: 300px;
+        }
+
+        .column2 {
+            float: left;
+            width: 25%;
+            padding: 10px;
+            height: 300px;
+        }
+
+        .column3 {
+            float: left;
+            width: 25%;
+            padding: 10px;
+            height: 300px;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+}
+<div>
+    <div class="row">
+        <div class="col-lg-6">
+            Image Section
+            <div class="pdetail_image">
+                <div data-role="imagemagnifier" data-magnifier-mode="glass" data-lens-type="circle" data-lens-size="300">
+                    <img src="~/Web/Images/fabric/Fabric1.jpg" alt="image" class="slide" width="300px" height="300px">
+                </div>
+            </div>
+            <div class="option flex">
+                <img src="~/Web/Images/fabric/Fabric1.jpg" />
+                <img src="~/Web/Images/fabric/Fabric2.jpg" />
+                <img src="~/Web/Images/fabric/Fabric3.jpg" />
+                <img src="~/Web/Images/fabric/Fabric4.jpg" />
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            Product Description Section
+            <h3>Polyster Viscose</h3>
+            Category : Fabric Product<br />
+            Quality : 26211<br />
+            Price : 2.500<br />
+            Currency : USD<br />
+            Exchange Rate : 79.850<br />
+            Blend Desc : P/V/ELA<br />
+            Blend Value : 77/19/04<br />
+            Weave Type : FANCY<br />
+            GSM : 225<br />
+            Stretch Type : B<br />
+            Shade : 4<br />
+
+            @*<p>Category : Fabric Product</p>
+                <p>Quality : 26211</p>
+                <p>Price : 2.500</p>
+                <p>Currency : USD</p>
+                <p>Exchange Rate : 79.850</p>
+                <p>Blend Desc : P/V/ELA</p>
+                <p>Blend Value : 77/19/04</p>
+                <p>Weave Type : FANCY</p>
+                <p>GSM : 225</p>
+                <p>Stretch Type : B</p>
+                <p>Shade : 4</p>*@
+        </div>
+
+        <div class="col-lg-3">
+            Add To Cart Button Section
+            <h5>Total Amount</h5>
+            <input type="number" value="30" min="30" id="qty" onclick="calc()">
+            <input type="text" id="amount" value="999">
+            <button class="pdetailbutton">Add To Cart</button>
+        </div>
+    </div>
+
+
+    @*@foreach (var item in Model)
+        {
+            var Design = item.vProduct + item.vMaterialCode + ".jpg"; ;
+            <div class="pdetailcontainer flex">
+                <div class="left">
+                    <div class="pdetail_image">
+                        <img src="~/web/images/fabric/fabric1.jpg" alt="" class="slide" id="pdetail" onclick="fn_productdetails();">
+                    </div>
+                    <div class="option flex">
+                        <img src="~/Web/Images/fabric/Fabric1.jpg" />
+                        <img src="~/Web/Images/fabric/Fabric2.jpg" />
+                        <img src="~/Web/Images/fabric/Fabric3.jpg" />
+                        <img src="~/Web/Images/fabric/Fabric4.jpg" />
+                    </div>
+                </div>
+                <div class="right">
+                    <h3>Polyster Viscose</h3>
+                    <h5>Fabric Product</h5>
+                    <p>Quality : 26211</p>
+                    <p>Price : 2.500</p>
+                    <p>Currency : USD</p>
+                    <p>Exchange Rate : 79.850</p>
+                    <p>Blend Desc : P/V/ELA</p>
+                    <p>Blend Value : 77/19/04</p>
+                    <p>Weave Type : FANCY</p>
+                    <p>GSM : 225</p>
+                    <p>Stretch Type : B</p>
+                    <p>Shade : 4</p>
+                    <p>@item.vQuality</p>
+                    <p>@item.nPrice</p>
+                    <p>@item.vBlendDescription</p>
+                    <p>@item.vBlendValue</p>
+                    <p>@item.vWeaveType</p>
+                    <p>@item.vStrechType</p>
+                    <p>@item.vDesignPattern</p>
+                    <p>@item.vShade</p>
+                    <div class="add flex1">
+                        <input type="number" value="30" min="30" id="qty" onclick="calc()">
+                    </div>
+                    <br />
+                    <h5>Total Amount</h5>
+                    <div class="">
+                        <input type="text" id="amount" value="999">
+                    </div>
+                    <a href="~/Views/Product/Cart.cshtml"><button class="pdetailbutton">Add To Cart</button></a>
+                </div>
+            </div>*@
+    @*}*@
+
+
+    <script>
+        function img(anything) {
+            document.querySelector('.slide').src = anything;
+        }
+
+        function change(change) {
+            const line = document.querySelector('.home');
+            line.style.background = change;
+        }
+    </script>
+
+    <script>
+        function calc() {
+            var itemquantity = document.getElementById("qty");
+            var fabricprodamt = document.getElementById("amount");
+            var fabricprdtotalamount = itemquantity.value * 999;
+            fabricprodamt.value = fabricprdtotalamount;
+        }
+    </script>
+</div>
