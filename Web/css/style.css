@@ -13,6 +13,7 @@ body {
     z-index: 9999;
     /* top: 0; */
     color: black;
+    right: 0px;
 }
 
 nav {
@@ -146,10 +147,10 @@ td {
     padding: 5px;
 }
 
-td input {
-    width: 30%;
-    height: 30px;
-}
+    td input {
+        width: 30%;
+        height: 30px;
+    }
 
 /* ================ End Cart Page CSS 19 JAN 2023 ==================== */
 
@@ -234,13 +235,14 @@ td input {
     height: 25px;
     font-size: 15px;
     font-family: 'Times New Roman', Times, serif;
+    float: right;
 }
 
 .commondropdown {
     width: 70%;
     color: black;
     background-color: #cdd2d9;
-   /* font-weight: bold;*/
+    /* font-weight: bold;*/
     height: 30px;
     margin-right: none;
 }
@@ -259,7 +261,7 @@ td input {
     width: 60%;
     color: black;
     background-color: whitesmoke;
-   /* font-weight: bold;*/
+    /* font-weight: bold;*/
     height: 60%;
 }
 
@@ -278,7 +280,7 @@ td input {
     width: 45%;
     color: black;
     /* background-color: whitesmoke; */
-   /* font-weight: bold;
+    /* font-weight: bold;
     height: 30px;*/
     margin-left: 50%;
     margin-right: none;
@@ -297,7 +299,7 @@ td input {
     /* border: 1px black solid; */
     text-align: left;
     margin-left: 0%;
-     width: 80px; 
+    width: 80px;
 }
 
 /* .multidropdown {
@@ -398,6 +400,7 @@ td input {
     font-weight: bold;
     height: 25px;
     font-size: 15px;
+    float: right;
 }
 /* -------- Yarn End Dropdown 07 FEB 2023 --------- */
 
@@ -487,7 +490,7 @@ td input {
     width: 45%;
     color: black;
     background-color: whitesmoke;
-   /* font-weight: bold;*/
+    /* font-weight: bold;*/
     height: 30px;
     border-width: 1px;
     margin-right: none;
@@ -524,9 +527,9 @@ table.center {
     opacity: 0.9;
 }
 
-.btnlogin:hover {
-    opacity: 1;
-}
+    .btnlogin:hover {
+        opacity: 1;
+    }
 
 .inputlogin {
     width: 120%;
@@ -538,10 +541,10 @@ table.center {
 }
 
 
-.inputlogin:focus {
-     background-color: #ddd;
-     outline: none;
-}
+    .inputlogin:focus {
+        background-color: #ddd;
+        outline: none;
+    }
 
 
 /* --------- End of Login CSS 10 FEB 2023 -------- */
