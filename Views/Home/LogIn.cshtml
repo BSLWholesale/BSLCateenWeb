@@ -1,6 +1,9 @@
 ﻿@{
-    Layout = null;
 
+    Layout = null;
+    ViewBag.Title = "Login";
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="~/web/css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
@@ -12,12 +15,14 @@
             var clsLogin = {};
             clsLogin.ErrorMsg = '';
             if ($('#txtEmail').val() == '') {
-                clsLogin.ErrorMsg = "Please Enter Email Id";
+                clsLogin.ErrorMsg = "Pease Enter Email Id";
             }
+
             else if ($('#txtPassword').val() == '') {
-                clsLogin.ErrorMsg = "Please Enter Password";
+                clsLogin.ErrorMsg = "Pease Enter Password";
             }
             else {
+
                 clsLogin.Email = $('#txtEmail').val();
                 clsLogin.UPassword = $('#txtPassword').val();
 
@@ -29,8 +34,8 @@
 
                     data: JSON.stringify(clsLogin),
                     success: function (Result) {
-                        debugger;
-                        var obj = JSON.parse(Result.message)
+                        debugger
+                        var obj = JSON.parse(Result.message);
                         if (obj.ErrorMsg == 'success') {
                             //var obj = JSON.parse(Result.message);
                             //var id = obj.Id;
@@ -40,7 +45,8 @@
                             window.location.href = "@Url.Action("Index", "Home")";
                         }
                         else {
-                            swal("Login", "User Id or Password is incorrect.", "error");
+                            swal("Login", "Invalid user id or password !", "error");
+                           // alert('Login Faild !.');
                         }
                     },
                     error: function (err) {
@@ -52,26 +58,29 @@
     </script>
 }
 
-<table>
-    <tr>
-        <td><img src="~/Web/Images/SingleLogoHighnoBG.png" alt="logo2" width="600"></td>
-        <td>
-            <div>
-                <div class="logincontainer">
-                    <h1>Login</h1>
+<div class="container" style="margin-top:8%;">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-5">
+            <img src="~/Web/Images/SingleLogoHighnoBG.png" alt="logo" width="100%">
+        </div>
+        <div class="col-sm-5">
+            <div class="form-group">
+                <h1>Login</h1>
 
-                    <label for="email"><b>Email</b></label><br />
-                    <input type="text" placeholder="Enter Email" id="txtEmail" name="txtemail" class="inputlogin" required><br />
+                <label for="email"><b>Email</b></label><br />
+                <input type="text" placeholder="Enter Email" id="txtEmail" name="txtemail" class="form-control" required><br />
 
-                    <label for="psw"><b>Password</b></label><br />
-                    <input type="password" placeholder="Enter Password" id="txtPassword" name="txtEmail" class="inputlogin" required><br />
+                <label for="psw"><b>Password</b></label><br />
+                <input type="password" placeholder="Enter Password" id="txtPassword" name="txtEmail" class="form-control" required><br />
 
-                    <button type="submit" id="btnLogin" onclick="Fn_Get_Login();" class="btnlogin">Login</button>
-                    <br />
-                    <p class="register">Not a member?  @Html.ActionLink("Register here", "Register", "Registration")</p>
+                <button type="submit" id="btnLogin" onclick="Fn_Get_Login();" class="btnlogin form-control">Login</button>
+                <br />
+                <p class="register">Not a member?  @Html.ActionLink("Register here", "Register", "Registration")</p>
 
-                </div>
             </div>
-        </td>
-    </tr>
-</table>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</div>
+

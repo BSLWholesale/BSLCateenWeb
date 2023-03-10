@@ -246,6 +246,7 @@
     <Content Include="Web\Images\yarn\Yarn8.jpeg" />
     <Content Include="Web\Images\yarn\Yarn9.jpeg" />
     <Content Include="Web\js\cart.js" />
+    <Content Include="Web\js\sweetalert.min.js" />
     <Content Include="Web\logo.png" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
