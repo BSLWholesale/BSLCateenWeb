@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "LogOut";
+
+}
+
+@{ 
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            sessionStorage.clear();
+            window.location.href = '/Home/Index';
+        });
+
+    </script>
+}
+

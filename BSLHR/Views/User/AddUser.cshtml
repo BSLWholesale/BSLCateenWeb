@@ -1,0 +1,264 @@
+﻿
+@{
+    ViewBag.Title = "AddUser";
+}
+
+@{   
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var queryString = location.search
+            var params = new URLSearchParams(queryString)
+            var id = parseInt(params.get("id"));
+            if (!isNaN(id)) {
+                Fn_SelectByID_Usermaster(id);
+                $("#btnUpdate").show();
+                $("#btnSubmit").hide();
+
+            }
+            else {
+                $("#btnUpdate").hide();
+                $("#btnSubmit").show();
+
+            }
+        });
+
+        function ValidateEmail() {
+            var email = document.getElementById("txtEmail").value;
+            var lblError = document.getElementById("lblError");
+            lblError.innerHTML = "";
+            var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            if (!expr.test(email)) {
+                lblError.innerHTML = "Invalid email address.";
+            }
+        }
+
+        function Fn_Add_Employee() {
+
+            if ($("#txtEmployeeName").val() == "") {
+                // Swal("", "Please Enter Employee Name!", "error");
+                alert("Please Enter Employee Name!");
+            }
+            else if ($("#txtEmail").val() == "") {
+                Swal("", "Please Enter Email!", "error");
+            }
+            else if ($("#txtMobile").val() == "") {
+               // Swal("", "Please Enter Mobile!", "error");
+                alert("Please Enter Mobile!");
+            }
+
+            else if ($("#txtDOB").val() == "") {
+                // Swal("", "Please Enter Date Of Birth!", "error");
+                alert("Please Enter Date Of Birth!");
+            }
+            else if ($('#ddlGrade option:selected').val() == "0") {
+               // Swal("", "Please Select Grade!", "error");
+                alert("Please Select Grade!");
+            }
+            else if ($('#ddlLocation option:selected').val() == "0") {
+               // Swal("", "Please Select Location!", "error");
+                alert("Please Select Location!");
+            }
+            else if ($("#txtPassword").val() == "") {
+                //  Swal("", "Please Enter Password!", "error");
+                alert("Please Enter Password!");
+            }
+            else if ($("#txtConfirmPassword").val() == "") {
+               // Swal("", "Please Enter Confirm Password!", "error");
+                alert("Please Enter Confirm Password!");
+            }
+            else if ($("#txtPassword").val() != $("#txtConfirmPassword").val()) {
+                // Swal("", "Password Not Match!", "error");
+                alert("Password Not Match!");
+            }
+            else {
+
+                var clsEmployee = {};
+                clsEmployee.EmpId = $("#txtEmployeeId").val().trim();
+                clsEmployee.EmpName = $("#txtEmployeeName").val().trim();
+                // clsEmployee.EmpLastName = $("#txtUserName").val().trim();
+                clsEmployee.EmpEmailId = $("#txtEmail").val().trim();
+                clsEmployee.EmpMobile = $("#txtMobile").val().trim();
+                clsEmployee.DOB = $("#txtDOB").val().trim();
+                clsEmployee.EmpGrade = $('#ddlGrade option:selected').val();
+                clsEmployee.EmpLocation = $('#ddlLocation option:selected').val();
+                //clsEmployee.BSLTravelDesk = $("#txtUserName").val().trim();
+                clsEmployee.EmpPassword = $("#txtPassword").val().trim();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/User/Fn_Add_Employee",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsEmployee),
+                    success: function (data) {
+                        var obj = JSON.parse(data.message);
+                        if (obj.vErrorMsg == "Success") {
+                            // swal("", "User Added Successfully!", "success");
+                            alert("User Added Successfully!");
+                            
+                        }
+                        else {
+                            //  swal("", "Failed To Added!", "error");
+                            alert("Failed To Added!");
+                        }
+
+                    },
+                    error: function (err) {
+                        alert(err);
+
+                    }
+                });
+
+            }
+        }
+
+
+    </script>
+}
+
+<!--**********************************    Content body start ***********************************-->
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <a href="@Url.Action("ViewUser", "User")">
+                        <h4>View Employee <i class="fa fa-eye "></i></h4>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Employee</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0);">Add Employee</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Add Employee</h5>
+                    </div>
+                    <div class="card-body">
+                        @*<form action="" method="post" enctype="multipart/form-data">*@
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="EmployeeId" class="form-label text-label">Employee Id<span class="text-danger">*</span></label>
+                                    <input id="txtEmployeeId" name="txtEmployeeId" placeholder="Enter Employee Id" type="text" class="form-control" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="EmployeeName" class="form-label text-label">Employee Name<span class="text-danger">*</span></label>
+                                    <input id="txtEmployeeName" name="txtEmployeeName" placeholder="Enter Your Name" type="text" class="form-control" autocomplete="off">
+                                </div>
+                            </div>
+                            @*<div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="Name" class="form-label text-label">Last Name<span class="text-danger">*</span></label>
+                                        <input id="txtUserName" name="txtUserName" placeholder="Enter Your Name" type="text" class="form-control" autocomplete="off">
+                                    </div>
+                                </div>*@
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="Email" class="form-label">Email<span class="text-danger">*</span></label>
+                                    <input id="txtEmail" name="txtEmail" onkeypress="ValidateEmail()" placeholder="Enter Your Email Address" type="text" class="form-control" autocomplete="off">
+                                    <span id="lblError" style="color:red"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="Mobile" class="form-label">Mobile<span class="text-danger">*</span></label>
+
+                                    <input id="txtMobile" name="txtMobile" onKeyPress="if(this.value.length==10) return false;" placeholder="Enter Your Mobile " type="number" class="form-control" autocomplete="off">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="datepicker" class="form-label">Date of Birth<span class="text-danger">*</span></label>
+                                    <div class="input-hasicon mb-xl-0 mb-3">
+                                        <input placeholder="Enter Your DOB" name="txtDOB" class="datepicker-default form-control" autocomplete="off" id="txtDOB">
+                                        <div class="icon"><i class="far fa-calendar"></i></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="form-label">Grade</label>
+                                    <select class="form-control" id="ddlGrade" name="ddlGrade">
+                                        <option value="0">--Select--</option>
+                                        <option value="1">S1</option>
+                                        <option value="2">S2</option>
+                                        <option value="3">S3</option>
+                                        <option value="4">S4</option>
+                                        <option value="5">S5</option>
+                                        <option value="6">S6</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="form-label">Location</label>
+                                    <select class="form-control" id="ddlLocation" name="ddlLocation">
+                                        <option value="0">--Select--</option>
+                                        <option value="Banswara">Banswara</option>
+                                        <option value="Daman">Daman</option>
+                                        <option value="Mumbai">Mumbai</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="Password" class="form-label">Password<span class="text-danger">*</span></label>
+                                    <div class="input-group pass-group">
+                                        <input id="txtPassword" placeholder="Enter Your Password" name="txtPassword" type="text" class="form-control pass-input" autocomplete="off">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class=" col-sm-4">
+                                <div class="form-group">
+                                    <label for="ConfirmPassword" class="form-label">Confirm Password<span class="text-danger">*</span></label>
+                                    <div class="input-group transparent-append  validate-password">
+
+                                        <input id="txtConfirmPassword" placeholder="Enter Your Confirm Password" name="txtConfirmPassword" type="text" class="form-control pass-input" autocomplete="off">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="col-lg-4 col-md-4">
+                                    <div class="form-group fallback w-100">
+                                        <label for="Image" class="form-label">Upload Your Image</label>
+                                        <input type="file" id="fileupliadImage" name="fileupliadImage" class="form-control">
+                                    </div>
+                                </div>*@
+                        </div>
+
+                        <button type="submit" id="btnSubmit" name="btnSubmit" class="btn btn-primary" onclick="Fn_Add_Employee();">Submit</button>
+                        <button type="submit" id="btnCancel" name="btnCancel" class="btn btn-danger ">Cancel</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!--**********************************
+    Content body end
+***********************************-->
